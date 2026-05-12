@@ -9,9 +9,9 @@ public final class DBManager {
     private Connection _con = null;
     public DBManager() {
 //Connect to Ms Access
-        _con = getMsAccessConnection();
+        //_con = getMsAccessConnection();
 //Connect to MySQL
-//_con = getMySQLConnection();
+        _con = getMySQLConnection();
     }
     //Thread safe instatiate method
     public static synchronized DBManager getInstance() {
@@ -29,8 +29,13 @@ public final class DBManager {
     private static Connection getMySQLConnection() {
         Connection con = null;
         try {
-            String strCon = "jdbc:mysql://127.0.0.1/Province?user=rtuser&password=123";
-            con = DriverManager.getConnection(strCon);
+            //String strCon = "jdbc:mysql://127.0.0.1:3306/Province?user=root&password=Chuchogilio33%";
+
+            String url = "jdbc:mysql://127.0.0.1:3306/Province?serverTimezone=UTC";
+            String user = "root";
+            String password = "Chuchogilio33%";
+
+            con = DriverManager.getConnection(url,user,password);
         } catch (SQLException se) {
             System.out.println(se);
         }

@@ -1,52 +1,115 @@
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
-/**
- * ProvinceClient: client application
- *
- */
+import java.util.Scanner;
+
 public class ProvinceClient {
+
     public static void main(String[] args) {
+
         try {
-//Get reference to rmi registry server
-            Registry registry = LocateRegistry.getRegistry("127.0.0.1");
-//Lookup server object
-            IRemoteProvince rp = (IRemoteProvince) registry.lookup("Province");
-//Save province
-            Province mid = new Province(1, "MID", "Mérida");
-            Province ens = new Province(2, "ENS", "Ensenada");
-            Province cdmx = new Province(3, "CMX", "Ciudad de México");
-            Province cam = new Province(4, "CAM", "Ciudad de Campeches"); //w
-            Province mty = new Province(5, "MTY", "Monterrey");
-//Save province
-            System.out.println("Saving provinces...");
-            rp.save(mid);
-            rp.save(ens);
-            rp.save(cdmx);
-            rp.save(cam);
-            rp.save(mty);
-//Update province
-            System.out.println("Update Campeches to Campeche");
-            Province updatedCAM = new Province(4, "CAM", "Ciudad de Campeche");
-            int iRet = rp.update(updatedCAM);
-//Display all provinces
-            System.out.println("Display all provinces");
-            ArrayList <Province> arrProv = rp.findAll();
-            for (Province p : arrProv) {
-                System.out.println(p.toString());
-            }
-//Delete Campeche
-            System.out.println("Delete CAM");
-            rp.delete(cam);
-//Display province starts by "Ciu"
-            System.out.println("Display province starts by \"Ciu\"");
-            arrProv = rp.findByName("Ciu");
-            for (Province p : arrProv) {
-                System.out.println(p.toString());
-            }
-//Delete all provinces
-            System.out.println("Delete all provinces");
-            rp.deleteAll();
+
+            Registry registry =
+                    LocateRegistry.getRegistry("127.0.0.1");
+
+            IRemoteProvince rp =
+                    (IRemoteProvince) registry.lookup("Province");
+
+            Scanner sc = new Scanner(System.in);
+            int opcion;
+            int id;
+            String shortName;
+            String city;
+            Province p;
+
+
+            do {
+                System.out.println("Seleccione una opcion:");
+                System.out.println("1 --- Agregar ciudad\n" +
+                                   "2 --- Modificar ciudad\n" +
+                                   "3 --- Eliminar ciudad\n" +
+                                   "4 --- Base de datos\n" +
+                                   "5 --- Salir");
+
+                opcion = sc.nextInt();
+
+                switch (opcion){
+                    case 1:
+                        System.out.println("Ingrese los datos de la ciudad");
+                        System.out.print("Id: ");
+                        id = sc.nextInt();
+                        sc.nextLine();
+
+                        System.out.print("ShortName: ");
+                        shortName = sc.nextLine();
+
+                        System.out.print("City Name: ");
+                        city = sc.nextLine();
+
+                        p = new Province(id, shortName, city);
+
+                        rp.save(p);
+
+                        break;
+
+                    case 2:
+                        System.out.println("Ingrese los datos de la ciudad a modificar");
+
+                        System.out.print("Id: ");
+                        id = sc.nextInt();
+                        sc.nextLine();
+
+                        System.out.print("ShortName: ");
+                        shortName = sc.nextLine();
+
+                        System.out.print("City Name: ");
+                        city = sc.nextLine();
+
+                        p = new Province(id, shortName, city);
+
+                        int iRet = rp.update(p);
+
+                        break;
+
+                    case 3:
+                        System.out.println("Ingrese los datos de la ciudad a eliminar");
+
+                        System.out.print("Id: ");
+                        id = sc.nextInt();
+                        sc.nextLine();
+
+                        System.out.print("ShortName: ");
+                        shortName = sc.nextLine();
+
+                        System.out.print("City Name: ");
+                        city = sc.nextLine();
+
+                        p = new Province(id, shortName, city);
+                        rp.delete(p);
+
+                        break;
+
+                    case 4:
+                        System.out.println("\nCities in database:\n");
+
+                        ArrayList<Province> arrProv = rp.findAll();
+
+                        for (Province prov : arrProv) {
+                            System.out.println(prov);
+                        }
+
+                        break;
+
+                    case 5:
+                        System.out.println("Ha elegido salir");
+                        break;
+
+                }
+
+            }while(opcion != 5);
+
+            sc.close();
+
         } catch (Exception e) {
             System.out.println(e);
         }
