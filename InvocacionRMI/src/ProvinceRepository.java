@@ -7,7 +7,8 @@ public class ProvinceRepository {
     public static int save(Province p) {
         int iRet = -1;
         try {
-            Connection con = DBManager.getInstance().getConnection(); String SQL = "INSERT INTO Province (Id, ShortName, Name) values(?,?,?)";
+            Connection con = DBManager.getInstance().getConnection();
+            String SQL = "INSERT INTO Province (Id, ShortName, Name) values(?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setInt(1, p.getId());
             pstmt.setString(2, p.getShortName());
@@ -22,7 +23,8 @@ public class ProvinceRepository {
     public static int update(Province p) {
         int iRet = -1;
         try {
-            Connection con = DBManager.getInstance().getConnection(); String SQL = "UPDATE Province SET ShortName=?, Name=? WHERE Id=?";
+            Connection con = DBManager.getInstance().getConnection();
+            String SQL = "UPDATE Province SET ShortName=?, Name=? WHERE Id=?";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setString(1, p.getShortName());
             pstmt.setString(2, p.getName());
@@ -37,7 +39,8 @@ public class ProvinceRepository {
     public static int delete(Province p) {
         int iRet = -1;
         try {
-            Connection con = DBManager.getInstance().getConnection(); String SQL = "DELETE FROM Province WHERE Id=?";
+            Connection con = DBManager.getInstance().getConnection();
+            String SQL = "DELETE FROM Province WHERE Id=?";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.setInt(1, p.getId());
             iRet = pstmt.executeUpdate();
@@ -50,7 +53,8 @@ public class ProvinceRepository {
     public static void deleteAll() {
         Connection con = DBManager.getInstance().getConnection();
         try {
-            con.setAutoCommit(false); String SQL = "DELETE FROM Province";
+            con.setAutoCommit(false);
+            String SQL = "DELETE FROM Province";
             PreparedStatement pstmt = con.prepareStatement(SQL);
             pstmt.executeUpdate();
             con.commit();
